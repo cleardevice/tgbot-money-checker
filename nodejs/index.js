@@ -64,6 +64,8 @@ const checkQiwi = async () => {
     if (newTransactions.length == 0)
         return
 
+    console.log('New Qiwi transactions found: ', newTransactions)
+
     const subscr = await client.smembers('qiwi')
     subscr.forEach(userId => sendToTelegramUser(userId, newTransactions))
 }
@@ -102,6 +104,8 @@ const checkYanex = async () => {
 
     if (newTransactions.length == 0)
         return
+
+    console.log('New Yoomoney transactions found: ', newTransactions)
 
     const subscr = await client.smembers('yandex')
     subscr.forEach(userId => sendToTelegramUser(userId, newTransactions))
