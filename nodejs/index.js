@@ -112,6 +112,7 @@ const checkYanex = async () => {
 }
 
 setInterval(() => {
+    console.log('Perform check at: %s', (new Date()).toISOString())
     checkQiwi()
     checkYanex()
 }, 60*1000)
