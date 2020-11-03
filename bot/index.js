@@ -47,8 +47,10 @@ const checkQiwi = async () => {
             Authorization: `Bearer ${process.env.QIWI_TOKEN}`
         }
     })
-    if (transactions.status != 200)
+    if (transactions.status != 200) {
+        console.log(transactions)
         return
+    }
 
     const newTransactions = []
     for (const transaction of transactions.data.data.reverse()) {
@@ -86,8 +88,10 @@ const checkYanex = async () => {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-    if (transactions.status != 200)
+    if (transactions.status != 200) {
+        console.log(transactions)
         return
+    }
 
     const newTransactions = []
     for (const transaction of transactions.data.operations.reverse()) {
