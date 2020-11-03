@@ -23,7 +23,11 @@ bot.use(async (ctx, next) => {
     const start = new Date()
     await next()
     const ms = new Date() - start
-    console.log('UserId: %s, Response time: %sms', ctx.message.from.id, ms)
+
+    const message = ctx.update['message'] || ctx.update['edited_message']
+    console.log('Interaction from userId: %s, response time: %sms', message.from.id, ms)
+    if (message['text'])
+      console.log('Text: %s', message.text)
 })
 
 const sendToTelegramUser = (userId, transactions) => {
