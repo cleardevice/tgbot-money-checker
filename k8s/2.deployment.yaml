@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bot
-        image: localhost:5000/tgbot-money-checker
+        image: busybox # localhost:5000/tgbot-money-checker
         envFrom:
         - configMapRef:
             name: tgbot-money-checker
