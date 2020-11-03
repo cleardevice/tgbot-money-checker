@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgbot-money-checker
+  labels:
+    app: tgbot-money-checker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tgbot-money-checker
+  template:
+    metadata:
+      labels:
+        app: tgbot-money-checker
+    spec:
+      containers:
+      - name: bot
+        image: localhost:5000/tgbot-money-checker
+        envFrom:
+        - configMapRef:
+            name: tgbot-money-checker
+      - name: redis
+        image: redis:6.0.9
+        volumeMounts:
+        - mountPath: /data
+          name: tgbot-money-checker-volume
+      volumes:
+      - name: tgbot-money-checker-volume
+        hostPath:
+          path: /var/local/tgbot-money-checker
+          type: Directory

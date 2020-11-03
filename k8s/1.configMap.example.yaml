@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tgbot-money-checker
+data:
+  BOT_TOKEN: <bot_token>
+  QIWI_TOKEN: <qiwi_token>
+  YANDEX_TOKEN: <yandex_token>

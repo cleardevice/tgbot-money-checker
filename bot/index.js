@@ -1,7 +1,7 @@
 require('dotenv').config()
 
-const template = `<i>{{date|date:"DD.MM.YYYY HH:mm"}}:</i>
-<b>{{amount}} rub</b> for "{{comment}}"`
+const template = `<i>{{date|date:"DD.MM.YYYY HH:mm"}}:</i>{{#from}}\nfrom: {{from}}{{/from}}
+<b>{{amount}} rub</b>{{#comment}} comment: "{{comment}}"{{/comment}}`
 
 const mustache = require('mustache-formats')
 const axios = require('axios')
@@ -55,7 +55,8 @@ const checkQiwi = async () => {
         const newTransaction = {
             date: transaction['date'],
             amount: transaction['total']['amount'],
-            comment: transaction['comment']
+            comment: transaction['comment'],
+            from: transaction['account']
         }
         newTransactions.push(newTransaction)
         client.sadd('transQiwi', transaction['txnId'])
