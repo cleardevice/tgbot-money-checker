@@ -4,5 +4,5 @@ import checkYanex from './checkYandex.js'
 
 const checksToPerform = [checkQiwi, checkYanex]
 setInterval(() => {
-    async.parallel(checksToPerform)
-}, 60*1000)
+  async.parallel(checksToPerform)
+}, 60 * 1000)
