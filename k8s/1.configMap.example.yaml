@@ -6,3 +6,4 @@ data:
   BOT_TOKEN: <bot_token>
   QIWI_TOKEN: <qiwi_token>
   YANDEX_TOKEN: <yandex_token>
+  TG_ID_ALLOWED: "TG_ID1,TG_ID2,..."

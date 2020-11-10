@@ -1,4 +1,5 @@
 require('dotenv').config()
+const async = require('async')
 
 const template = `<i>{{date|date:"DD.MM.YYYY HH:mm"}}:</i>{{#from}}\nfrom: {{from}}{{/from}}
 <b>{{amount}} rub</b>{{#comment}} comment: "{{comment}}"{{/comment}}`
@@ -18,6 +19,8 @@ client.on("error", function(error) {
 
 const {Telegraf} = require('telegraf')
 const bot = new Telegraf(process.env.BOT_TOKEN)
+
+const allowedMembers = process.env.TG_ID_ALLOWED.split(',').map(x => Number.parseInt(x))
   
 bot.use(async (ctx, next) => {
     const start = new Date()
@@ -38,6 +41,7 @@ const sendToTelegramUser = (userId, transactions) => {
 }
 
 const checkQiwi = async () => {
+    console.log('checkQiwi %s', (new Date()).toISOString())
     const subsrCount = await client.scard('qiwi')
     if (subsrCount == 0)
         return
@@ -67,6 +71,7 @@ const checkQiwi = async () => {
         newTransactions.push(newTransaction)
         client.sadd('transQiwi', transaction['txnId'])
     }
+    console.log('end checkQiwi %s', (new Date()).toISOString())
 
     if (newTransactions.length == 0)
         return
@@ -78,6 +83,7 @@ const checkQiwi = async () => {
 }
 
 const checkYanex = async () => {
+    console.log('checkYanex %s', (new Date()).toISOString())
     const subsrCount = await client.scard('yandex')
     if (subsrCount == 0)
         return
@@ -110,6 +116,7 @@ const checkYanex = async () => {
         newTransactions.push(newTransaction)
         client.sadd('transYandex', transaction['operation_id'])
     }
+    console.log('end checkYanex %s', (new Date()).toISOString())
 
     if (newTransactions.length == 0)
         return
@@ -120,15 +127,17 @@ const checkYanex = async () => {
     subscr.forEach(userId => sendToTelegramUser(userId, newTransactions))
 }
 
+const checksToPerform = [checkQiwi, checkYanex]
 setInterval(() => {
-    console.log('Perform check at: %s', (new Date()).toISOString())
-    checkQiwi()
-    checkYanex()
+    async.parallel(checksToPerform)
 }, 60*1000)
 
 bot.start(ctx => ctx.reply('Hello stranger'))
 bot.command('qiwi', ctx => {
     const userId = ctx.message.from.id
+    if (!allowedMembers.includes(userId))
+        return
+
     client.sadd('qiwi', userId)
 
     console.log('UserId: %d subscribed to Qiwi', userId)
@@ -136,6 +145,9 @@ bot.command('qiwi', ctx => {
 })
 bot.command('yandex', ctx => {
     const userId = ctx.message.from.id
+    if (!allowedMembers.includes(userId))
+        return
+
     client.sadd('yandex', userId)
 
     console.log('UserId: %d subscribed to Yandex', userId)
@@ -143,6 +155,9 @@ bot.command('yandex', ctx => {
 })
 bot.command('un', ctx => {
     const userId = ctx.message.from.id
+    if (!allowedMembers.includes(userId))
+        return
+
     client.srem('qiwi', userId)
     client.srem('yandex', userId)
 
