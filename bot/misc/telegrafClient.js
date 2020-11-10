@@ -1,24 +1,10 @@
 import tg from 'telegraf'
-import watchCreateScene from '../commands/scenes/watchCreateScene.js'
 
 const {
-  Telegraf,
-  session,
-  Stage
+  Telegraf
 } = tg
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
-bot.use(session())
-
-const stage = new Stage([watchCreateScene], {
-  ttl: 60
-})
-stage.command('cancel', (ctx) => {
-  ctx.reply("Operation canceled");
-  return ctx.scene.leave();
-});
-bot.use(stage.middleware())
-
 bot.use(async (ctx, next) => {
   const start = new Date()
   await next()
