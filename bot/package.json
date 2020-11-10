@@ -17,7 +17,9 @@
     "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "mustache-formats": "^1.0.6",
-    "telegraf": "^3.38.0"
+    "node-jq": "^1.11.3",
+    "telegraf": "^3.38.0",
+    "telegraf-session-redis": "^5.1.0"
   },
   "nodemonConfig": {
     "ignore": [

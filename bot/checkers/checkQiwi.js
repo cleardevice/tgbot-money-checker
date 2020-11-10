@@ -1,5 +1,5 @@
 import axios from 'axios'
-import sendToTelegramUser from './tools/sendToTelegramUser.js'
+import sendTransactions from './tools/sendTransactions.js'
 import client from '../misc/redisClientInit.js'
 
 export default async () => {
@@ -44,5 +44,5 @@ export default async () => {
   console.log('New Qiwi transactions found: ', newTransactions)
 
   const subscr = await client.smembers('qiwi')
-  subscr.forEach(userId => sendToTelegramUser(userId, newTransactions))
+  subscr.forEach(userId => sendTransactions(userId, newTransactions))
 }
