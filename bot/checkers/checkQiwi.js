@@ -44,5 +44,5 @@ export default async () => {
   console.log('New Qiwi transactions found: ', newTransactions)
 
   const subscr = await client.smembers('qiwi')
-  subscr.forEach(userId => sendTransactions(userId, newTransactions))
+  subscr.forEach(userId => sendTransactions(userId, 'Qiwi', newTransactions))
 }

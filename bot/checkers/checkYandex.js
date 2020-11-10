@@ -48,5 +48,5 @@ export default async () => {
   console.log('New Yoomoney transactions found: ', newTransactions)
 
   const subscr = await client.smembers('yandex')
-  subscr.forEach(userId => sendTransactions(userId, newTransactions))
+  subscr.forEach(userId => sendTransactions(userId, 'YooMoney', newTransactions))
 }
