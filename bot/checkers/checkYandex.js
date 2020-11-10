@@ -1,8 +1,6 @@
 import axios from 'axios'
 import sendToTelegramUser from './tools/sendToTelegramUser.js'
 import client from '../misc/redisClientInit.js'
-import dotenv from 'dotenv'
-dotenv.config()
 
 export default async () => {
   console.log('checkYanex %s', (new Date()).toISOString())

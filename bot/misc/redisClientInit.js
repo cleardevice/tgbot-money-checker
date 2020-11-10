@@ -1,7 +1,4 @@
-import dotenv from 'dotenv'
 import asyncRedis from 'async-redis'
-
-dotenv.config()
 
 const client = asyncRedis.createClient({
   db: 0,
