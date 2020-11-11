@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bot
-        image: busybox # localhost:5000/tgbot-money-checker
+        image: busybox
         envFrom:
         - configMapRef:
             name: tgbot-money-checker
@@ -30,3 +30,5 @@ spec:
         hostPath:
           path: /var/local/tgbot-money-checker
           type: Directory
+      imagePullSecrets:
+      - name: registry-shadow
