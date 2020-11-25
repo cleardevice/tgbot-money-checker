@@ -11,10 +11,12 @@ checkver:
 	! kubectl get deployment tgbot-money-checker -o=jsonpath='{$$.spec.template.spec.containers[:1].image}' | grep $(ver)
 build:
 	docker build -t tgbot-money-checker .
-	docker tag tgbot-money-checker registry.digitalocean.com/$(r)/tgbot-money-checker:$(ver)
+	docker tag tgbot-money-checker localhost:5000/tgbot-money-checker:$(ver)
 push:
-	docker push registry.digitalocean.com/$(r)/tgbot-money-checker:$(ver)
+	ssh -f -L5000:localhost:5000 $(server) sleep 5
+	docker push localhost:5000/tgbot-money-checker:$(ver)
+
 deploy:
 	kubectl apply -f k8s/2.deployment.yaml
 redeploy:
-	kubectl set image deployment/tgbot-money-checker bot=registry.digitalocean.com/$(r)/tgbot-money-checker:$(ver) --record
+	kubectl set image deployment/tgbot-money-checker bot=localhost:5000/tgbot-money-checker:$(ver) --record
